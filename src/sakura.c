@@ -290,6 +290,7 @@ static struct {
 	bool faded;			 /* Fading state */
 	bool use_fading;
 	bool scrollable_tabs;
+	bool maximized;
 	GtkWidget *item_copy_link;       /* We include here only the items which need to be hidden */
 	GtkWidget *item_open_link;
 	GtkWidget *item_open_mail;
@@ -2495,6 +2496,11 @@ sakura_init()
 	}
 	sakura.icon = g_key_file_get_string(sakura.cfg, cfg_group, "icon_file", NULL);
 
+	if(!g_key_file_has_key(sakura.cfg, cfg_group, "maximized", NULL)) {
+		sakura_set_config_boolean("maximized", FALSE);
+	}
+	sakura.maximized = g_key_file_get_boolean(sakura.cfg, cfg_group, "maximized", NULL);
+
 	/* set default title pattern from config or NULL */
 	sakura.tab_default_title = g_key_file_get_string(sakura.cfg, cfg_group, "tab_default_title", NULL);
 
@@ -2576,7 +2582,7 @@ sakura_init()
 	/* These options are exclusive */
 	if (option_fullscreen) {
 		sakura_fullscreen(NULL, NULL);
-	} else if (option_maximize) {
+	} else if (sakura.maximized || option_maximize) {
 		gtk_window_maximize(GTK_WINDOW(sakura.main_window));
 	}
 
