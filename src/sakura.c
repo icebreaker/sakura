@@ -292,6 +292,7 @@ static struct {
 	bool scrollable_tabs;
 	bool maximized;
 	bool borderless;
+	bool login;
 	GtkWidget *item_copy_link;       /* We include here only the items which need to be hidden */
 	GtkWidget *item_open_link;
 	GtkWidget *item_open_mail;
@@ -2507,6 +2508,11 @@ sakura_init()
 	}
 	sakura.borderless = g_key_file_get_boolean(sakura.cfg, cfg_group, "borderless", NULL);
 
+	if(!g_key_file_has_key(sakura.cfg, cfg_group, "login", NULL)) {
+		sakura_set_config_boolean("login", FALSE);
+	}
+	sakura.login = g_key_file_get_boolean(sakura.cfg, cfg_group, "login", NULL);
+
 	/* set default title pattern from config or NULL */
 	sakura.tab_default_title = g_key_file_get_string(sakura.cfg, cfg_group, "tab_default_title", NULL);
 
@@ -2547,7 +2553,7 @@ sakura_init()
 	/* Set argv for forked childs. Real argv vector starts at argv[1] because we're
 	   using G_SPAWN_FILE_AND_ARGV_ZERO to be able to launch login shells */
 	sakura.argv[0]=g_strdup(g_getenv("SHELL"));
-	if (option_login) {
+	if (sakura.login || option_login) {
 		sakura.argv[1]=g_strdup_printf("-%s", g_getenv("SHELL"));
 	} else {
 		sakura.argv[1]=g_strdup(g_getenv("SHELL"));
