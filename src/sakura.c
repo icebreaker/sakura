@@ -2576,6 +2576,8 @@ sakura_init()
 	gchar *icon_path; error=NULL;
 	if (option_icon) {
 		icon_path = g_strdup_printf("%s", option_icon);
+	} else if (*sakura.icon == '!') {
+		icon_path = g_build_filename(g_get_user_config_dir(), "sakura", sakura.icon + 1, NULL);
 	} else {
 		icon_path = g_strdup_printf(DATADIR "/pixmaps/%s", sakura.icon);
 	}
