@@ -291,6 +291,7 @@ static struct {
 	bool use_fading;
 	bool scrollable_tabs;
 	bool maximized;
+	bool borderless;
 	GtkWidget *item_copy_link;       /* We include here only the items which need to be hidden */
 	GtkWidget *item_open_link;
 	GtkWidget *item_open_mail;
@@ -2501,6 +2502,11 @@ sakura_init()
 	}
 	sakura.maximized = g_key_file_get_boolean(sakura.cfg, cfg_group, "maximized", NULL);
 
+	if(!g_key_file_has_key(sakura.cfg, cfg_group, "borderless", NULL)) {
+		sakura_set_config_boolean("borderless", FALSE);
+	}
+	sakura.borderless = g_key_file_get_boolean(sakura.cfg, cfg_group, "borderless", NULL);
+
 	/* set default title pattern from config or NULL */
 	sakura.tab_default_title = g_key_file_get_string(sakura.cfg, cfg_group, "tab_default_title", NULL);
 
@@ -2577,6 +2583,10 @@ sakura_init()
 
 	if (option_colorset && option_colorset>0 && option_colorset <= NUM_COLORSETS) {
 		sakura.last_colorset=option_colorset;
+	}
+
+	if (sakura.borderless) {
+		gtk_window_set_decorated(GTK_WINDOW(sakura.main_window), FALSE);
 	}
 
 	/* These options are exclusive */
