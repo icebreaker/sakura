@@ -3144,11 +3144,10 @@ sakura_add_tab()
 	}
 
 	/* Set tab title style */
-	gchar *css = g_strdup_printf(TAB_TITLE_CSS);
-	gtk_css_provider_load_from_data(sakura.provider, css, -1, NULL);
+	gtk_css_provider_load_from_data(sakura.provider, TAB_TITLE_CSS, -1, NULL);
+	gtk_css_provider_load_from_data(sakura.provider, HIG_DIALOG_CSS, -1, NULL);
 	GtkStyleContext *context = gtk_widget_get_style_context(tab_label_hbox);
 	gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(sakura.provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_free(css);
 
 	gtk_widget_show_all(tab_label_hbox);
 	
