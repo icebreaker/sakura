@@ -3,7 +3,9 @@ Installing sakura
 
 * How to compile and install this beast ?
 
-	$ cmake . 
+	$ mkdir build
+	$ cd build
+	$ cmake ..
 	$ make
 	$ su -c 'make install'
 
@@ -12,7 +14,7 @@ Installing sakura
 	To install sakura with a different prefix, cmake needs to be invoked with the proper environment 
 	variables, so to install sakura in /usr, you must type:
 
-	$ cmake -DCMAKE_INSTALL_PREFIX=/usr .
+	$ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 
 	Use CMAKE_BUILD_TYPE=Debug if you need debug symbols. Default type is "Release".
 
